@@ -1,0 +1,12 @@
+node_modules/
+dist/
+data/*.db
+data/*.db-wal
+data/*.db-shm
+.env
+*.log
+.DS_Store
+client/dist/
+server/data/*.db
+server/data/*.db-wal
+server/data/*.db-shm

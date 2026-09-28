@@ -1,3 +1,61 @@
+# PHC Digital Vaccine Cold Chain
+
+Staff log ice-lined refrigerator temperatures in the browser. SQLite stores readings. The 2°C–8°C band drives Safe / Warning / Critical status and alerts. Dashboard, Recharts trends, and deviation reports replace paper plotting. There are no sensors or IoT devices.
+
+Unrelated Task 1C eBot code remains under `algorithms/` (see below).
+
+## App layout
+
+- `client/` — Vite + React UI
+- `server/` — Express API + SQLite (`server/data/coldchain.db` via better-sqlite3)
+
+## Install and run
+
+Use two terminals from the repo root.
+
+```bash
+# Terminal 1 — API (http://localhost:3001)
+cd server
+npm install
+npm start
+```
+
+```bash
+# Terminal 2 — UI (http://localhost:5173, proxies /api to the server)
+cd client
+npm install
+npm run dev
+```
+
+Open http://localhost:5173. The database file is created and seeded on first server start.
+
+Optional: `JWT_SECRET` and `PORT` (default `3001`) for the server; `CLIENT_ORIGIN` if the UI is not on `http://localhost:5173`.
+
+Server unit tests for temperature bands: `cd server && npm test`.
+
+## Demo accounts
+
+Shown on the login page. Passwords are stored hashed.
+
+| Role | Username | Password |
+| --- | --- | --- |
+| Staff | `staff` | `phc-staff` |
+| Supervisor | `supervisor` | `phc-super` |
+
+Staff can log readings. Supervisors can also acknowledge alerts on Reports.
+
+## Demo the four flows
+
+1. **Login** — Sign in as `staff`. Credentials are listed on `/login`.
+2. **Log** — Open **Log reading**. Save `5.0°C` (Safe, no alert). Save `11.0°C` (Critical, alert created).
+3. **Dashboard** — `/` shows freezer cards with the latest °C and color-coded Safe / Warning / Critical, plus open alerts.
+4. **Trends** — `/trends` pick a freezer and switch Daily / Weekly / Monthly charts (safe band shaded).
+5. **Reports** — `/reports` filter by freezer, date, and level. Table lists deviation count, hours out of range, and affected batches. Use **Export CSV**.
+
+Status rules: Safe = 2–8°C inclusive. Warning = 1–2°C exclusive of 2, or 8–10°C exclusive of 8. Critical = colder than 1°C or warmer than 10°C. Out-of-range writes create an `alerts` row (`acknowledged_at` starts null).
+
+---
+
 # Strata Cobot Task 1C
 
 `algorithms/scripts/task1c/task1c.py` drives the eBot along `/ebot_path`, through the ten waypoints in order, and stops on the last one. It reads `/odom`, `/scan`, and the latched `/map` rock grid, and publishes `/cmd_vel`. Nav2 and other route-following packages are not used.
