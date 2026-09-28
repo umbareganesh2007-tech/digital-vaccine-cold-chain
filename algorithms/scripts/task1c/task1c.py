@@ -18,8 +18,8 @@
 *****************************************************************************************
 '''
 
-# Team ID:          [ Team-ID ]
-# Author List:		Ganesh Umbare
+# Team ID:          4040
+# Author List:		Ganesh,Sharvari,Vrushali
 # Filename:		    task1c.py
 # Functions:        wrap_angle, yaw_from_quaternion, clamp, grid_index,
 #                   vicinity_occupied, segment_blocked, beam_clearance,
